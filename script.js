@@ -1,75 +1,135 @@
+
 // MOBILE NAVIGATION
+
 const menuToggle = document.querySelector(".menu-toggle");
 const nav = document.querySelector(".nav");
 
 if (menuToggle && nav) {
-  menuToggle.addEventListener("click", () => {
-    const isOpen = nav.classList.toggle("open");
 
-    menuToggle.setAttribute("aria-expanded", String(isOpen));
+  menuToggle.addEventListener("click", () => {
 
-    menuToggle.setAttribute(
-      "aria-label",
-      isOpen ? "Close navigation" : "Open navigation"
-    );
+    const isOpen = nav.classList.toggle("open");
 
-    menuToggle.textContent = isOpen ? "×" : "☰";
-  });
+    menuToggle.setAttribute("aria-expanded", String(isOpen));
 
-  nav.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", () => {
-      nav.classList.remove("open");
+    menuToggle.setAttribute(
+      "aria-label",
+      isOpen ? "Close navigation" : "Open navigation"
+    );
 
-      menuToggle.setAttribute("aria-expanded", "false");
-      menuToggle.setAttribute("aria-label", "Open navigation");
-      menuToggle.textContent = "☰";
-    });
-  });
+    menuToggle.textContent = isOpen ? "×" : "☰";
+
+  });
+
+  nav.querySelectorAll("a").forEach((link) => {
+
+    link.addEventListener("click", () => {
+
+      nav.classList.remove("open");
+
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Open navigation");
+
+      menuToggle.textContent = "☰";
+
+    });
+
+  });
+
+  document.addEventListener("keydown", (event) => {
+
+    if (event.key === "Escape") {
+
+      nav.classList.remove("open");
+
+      menuToggle.setAttribute("aria-expanded", "false");
+      menuToggle.setAttribute("aria-label", "Open navigation");
+
+      menuToggle.textContent = "☰";
+
+    }
+
+  });
+
 }
 
-// SELECT PACKAGE AUTOMATICALLY
-document.querySelectorAll(".plan-link").forEach((link) => {
-  link.addEventListener("click", () => {
-    const packageSelect = document.getElementById("package");
 
-    if (packageSelect) {
-      packageSelect.value = link.dataset.plan;
-    }
-  });
+// AUTOMATIC PACKAGE SELECTION
+
+document.querySelectorAll(".plan-link").forEach((link) => {
+
+  link.addEventListener("click", () => {
+
+    const packageSelect = document.getElementById("package");
+    const plan = link.dataset.plan;
+
+    if (packageSelect && plan) {
+
+      const matchingOption = [...packageSelect.options].find(
+        option => option.value.toLowerCase().startsWith(plan.toLowerCase())
+      );
+
+      if (matchingOption) {
+        packageSelect.value = matchingOption.value;
+      }
+
+    }
+
+  });
+
 });
 
-// CONTACT FORM: OPEN WHATSAPP
+
+// CONTACT FORM - WHATSAPP
+
 const form = document.getElementById("contactForm");
 
 if (form) {
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
 
-    const name = document.getElementById("name").value.trim();
-    const business = document.getElementById("business").value.trim();
-    const selectedPackage = document.getElementById("package").value;
-    const message = document.getElementById("message").value.trim();
+  form.addEventListener("submit", (event) => {
 
-    const whatsappMessage =
-      `Hi YAGORA Web Creation!\n\n` +
-      `My name: ${name}\n` +
-      `Business name: ${business}\n` +
-      `Package: ${selectedPackage}\n` +
-      `Website requirements: ${
-        message || "I would like to discuss my requirements."
-      }`;
+    event.preventDefault();
 
-    const whatsappURL =
-      "https://wa.me/918655684587?text=" +
-      encodeURIComponent(whatsappMessage);
+    const name = document.getElementById("name").value.trim();
 
-    window.open(whatsappURL, "_blank");
-  });
+    const business = document.getElementById("business").value.trim();
+
+    const selectedPackage = document.getElementById("package").value;
+
+    const message = document.getElementById("message").value.trim();
+
+    const whatsappMessage =
+
+      `Hi YAGORA Web Creation!\n\n` +
+
+      `My name: ${name}\n` +
+
+      `Business name: ${business}\n` +
+
+      `Package: ${selectedPackage}\n` +
+
+      `Website requirements: ${
+        message || "I would like to discuss my requirements."
+      }`;
+
+    const whatsappURL =
+
+      "https://wa.me/918655684587?text=" +
+      encodeURIComponent(whatsappMessage);
+
+    window.open(whatsappURL, "_blank", "noopener,noreferrer");
+
+  });
+
 }
 
+
 // AUTOMATIC COPYRIGHT YEAR
+
 const yearElement = document.getElementById("year");
 
 if (yearElement) {
-  yearElement.textContent = new Date().getFullYear();
-  }
+
+  yearElement.textContent = new Date().getFullYear();
+
+}
